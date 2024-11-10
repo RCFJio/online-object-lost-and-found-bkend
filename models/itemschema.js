@@ -22,16 +22,16 @@ const itemSchema = new mongoose.Schema({
     required: true,
   },
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true,
   },
-  createdAt: {
+ Date: {
     type: Date,
     default: Date.now,
   },
   image: {
-    type: String,  // This can be a URL or file path
+    type: String,  
     required: false,  // Optional, depending on if you want to make it mandatory
   },
 });
