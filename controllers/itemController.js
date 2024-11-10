@@ -1,5 +1,5 @@
-const Item = require('../models/Item');
-const User = require('../models/User'); // Assuming you have a User model
+const Item = require('../models/itemschema');
+const User = require('../models/userschema'); 
 const nodemailer = require('nodemailer');
 
 // Function to send email notification

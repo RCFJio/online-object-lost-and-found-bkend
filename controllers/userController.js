@@ -6,6 +6,14 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password, role, mobile } = req.body;
 
+    // Check if the email domain is allowed
+    const allowedDomain = 'nitc.ac.in'; // Replace with your specific domain
+    const emailDomain = email.split('@')[1];
+    
+    if (emailDomain !== allowedDomain) {
+      return res.status(400).json({ message: `Only emails from ${allowedDomain} are allowed` });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
