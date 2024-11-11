@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/userschema');
-
+const jwt = require('jsonwebtoken');
 // User Registration
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role, mobile } = req.body;
+    const { user_id, email, password, role, mobile } = req.body;
 
     // Check if the email domain is allowed
     const allowedDomain = 'nitc.ac.in'; // Replace with your specific domain
@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
-    const newUser = new User({ name, email, password: hashedPassword, role, mobile });
+    const newUser = new User({ user_id, email, password: hashedPassword, role, mobile });
     await newUser.save();
 
     // Send success response

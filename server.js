@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://jijorenj:c3qv1WBVyQKuSDFS@cluster0.hn19t.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/project', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 

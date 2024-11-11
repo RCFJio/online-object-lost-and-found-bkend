@@ -71,15 +71,27 @@ exports.postItem = async (req, res) => {
   }
 };
 
-// Find items
+//Find items
 exports.findItems = async (req, res) => {
   try {
-    const { status, category, location } = req.query;
+    const { status, category, location, date } = req.query;
 
     const filter = {};
     if (status) filter.status = status;
     if (category) filter.category = category;
     if (location) filter.location = location;
+
+    // Check if the date parameter is passed and filter accordingly
+    if (date) {
+      const startDate = new Date(date);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 1); // Get the next day to include the full day
+
+      filter.date = {
+        $gte: startDate,
+        $lt: endDate
+      };
+    }
 
     const items = await Item.find(filter);
     res.json(items);

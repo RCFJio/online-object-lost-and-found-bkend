@@ -34,6 +34,6 @@ const itemSchema = new mongoose.Schema({
     type: String,  
     required: false,  // Optional, depending on if you want to make it mandatory
   },
-});
+},{ collection: 'item' });
 
 module.exports = mongoose.model('Item', itemSchema);
