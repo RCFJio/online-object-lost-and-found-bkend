@@ -1,7 +1,6 @@
 const Item = require('../models/itemschema');
 const User = require('../models/userschema'); 
 const nodemailer = require('nodemailer');
-
 // Function to send email notification
 const sendEmailNotification = (userEmail, itemTitle) => {
   const transporter = nodemailer.createTransport({
@@ -33,6 +32,7 @@ exports.postItem = async (req, res) => {
   try {
     const { title, description, location, category, status } = req.body;
 
+
     // Create a new item
     const newItem = new Item({
       title,
@@ -40,7 +40,7 @@ exports.postItem = async (req, res) => {
       location,
       category,
       status,
-      postedBy: req.userId,
+      postedBy: req.userId, 
     });
 
     // Save the new item to the database
@@ -71,7 +71,6 @@ exports.postItem = async (req, res) => {
   }
 };
 
-//Find items
 exports.findItems = async (req, res) => {
   try {
     const { status, category, location, date } = req.query;
@@ -81,8 +80,8 @@ exports.findItems = async (req, res) => {
     if (category) filter.category = category;
     if (location) filter.location = location;
 
-    // Check if the date parameter is passed and filter accordingly
-    if (date) {
+    // Give priority to category; apply date filter only if category is present
+    if (category && date) {
       const startDate = new Date(date);
       const endDate = new Date(startDate);
       endDate.setDate(startDate.getDate() + 1); // Get the next day to include the full day
@@ -94,8 +93,15 @@ exports.findItems = async (req, res) => {
     }
 
     const items = await Item.find(filter);
+
+    // Check if no items were found
+    if (items.length === 0) {
+      return res.status(404).json({ message: "Not found yet" });
+    }
+
     res.json(items);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+

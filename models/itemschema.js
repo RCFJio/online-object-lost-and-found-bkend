@@ -21,9 +21,8 @@ const itemSchema = new mongoose.Schema({
     enum: ['lost', 'found'],
     required: true,
   },
-  user_id: {
+  postedBy: { 
     type: String,
-    ref: 'User',
     required: true,
   },
  Date: {
