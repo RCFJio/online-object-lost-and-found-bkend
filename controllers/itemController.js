@@ -6,13 +6,13 @@ const sendEmailNotification = (userEmail, itemTitle) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail', // You can use another email service if needed
     auth: {
-      user: 'your-email@gmail.com', // Replace with your email address
-      pass: 'your-email-password',   // Replace with your email password or app-specific password
+      user: 'jijo23867@gmail.com', // Replace with your email address
+      pass: 'telmasbrxeifbmhv',   // Replace with your email password or app-specific password
     },
   });
 
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: 'jijo23867@gmail.com',
     to: userEmail,
     subject: 'Potential Match for Your Lost Item',
     text: `We have found an item titled "${itemTitle}" that might match your lost item. Please check it out.`,
@@ -58,7 +58,7 @@ exports.postItem = async (req, res) => {
 
       // Notify users who posted the similar lost items
       for (let item of similarItems) {
-        const user = await User.findById(item.postedBy);
+        const user = await User.findOne({ user_id: item.postedBy });
         if (user && user.email) {
           sendEmailNotification(user.email, newItem.title);
         }

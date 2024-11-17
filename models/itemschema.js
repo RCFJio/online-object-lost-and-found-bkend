@@ -33,6 +33,10 @@ const itemSchema = new mongoose.Schema({
     type: String,  
     required: false,  // Optional, depending on if you want to make it mandatory
   },
+  isClaimed: { 
+    type: Boolean, 
+    default: false, 
+  },
 },{ collection: 'item' });
 
 module.exports = mongoose.model('Item', itemSchema);
