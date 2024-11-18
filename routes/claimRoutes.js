@@ -4,6 +4,6 @@ const authenticate = require('../middleware/userauth');
 
 const router = express.Router();
 
-router.post('/:itemId', authenticate, claimItem);
+router.post('/', authenticate, claimItem);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Item = require('../models/itemschema');
 const Claim = require('../models/claimschema');
-
+const User = require('../models/userschema');
 exports.viewAllItems = async (req, res) => {
   try {
     const items = await Item.find();
@@ -63,46 +63,20 @@ exports.approveClaim = async (req, res) => {
     await Item.findByIdAndDelete(claim.lost_id);
     await Item.findByIdAndDelete(claim.found_id);
 
+    const user = await User.findOne({ user_id: claim.claimedBy }); // Adjust if roll number is in another field
+    if (!user || !user.email) {
+      return res.status(404).json({ message: 'User email not found' });
+    }
+
     // Send a notification to the user who claimed the item
-    sendEmailNotification(claim.claimedBy, claim.lost_id.title);
+    sendEmailNotification(user.email, claim.lost_id.title);
 
     res.status(200).json({ message: 'Claim approved and both items removed from database' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-// Approve claim and notify user
-/*exports.approveClaim = async (req, res) => {
-  try {
-    const claim = await Claim.findById(req.params.claimId).populate('itemId');
-    if (!claim) {
-      return res.status(404).json({ message: 'Claim not found' });
-    }
 
-    claim.status = 'approved';
-    await claim.save();
-
-    const item = await Item.findById(claim.itemId);
-    if (!item) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
-
-    // Fetch user details for notification
-    const user = await User.findById(claim.claimedBy); // assuming claimedBy stores the user's ID
-
-    // Send email notification to user
-    if (user && user.email) {
-      sendEmailNotification(user.email, item.title);
-    }
-
-    // Delete item from the collection after approval
-    await Item.findByIdAndDelete(item._id);
-
-    res.status(200).json({ message: 'Claim approved. Item deleted and notification sent to user.' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};*/
 
 exports.rejectClaim = async (req, res) => {
   try {
@@ -119,6 +93,26 @@ exports.rejectClaim = async (req, res) => {
     await item.save();
 
     res.status(200).json({ message: 'Claim rejected and item status reset' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.viewPendingClaims = async (req, res) => {
+  try {
+    // Fetch only claims with status 'pending'
+    const pendingClaims = await Claim.find({ status: 'pending' })
+      .populate('lost_id') // Populate lost item details
+      .populate('found_id') // Populate found item details
+      .populate('claimedBy', 'email name'); // Populate claimedBy with specific fields (if User schema exists)
+
+    // If no pending claims are found, return a message
+    if (pendingClaims.length === 0) {
+      return res.status(404).json({ message: 'No pending claims found' });
+    }
+
+    // Send the pending claims data as a response
+    res.status(200).json(pendingClaims);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

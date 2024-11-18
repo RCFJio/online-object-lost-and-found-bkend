@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const claimSchema = new mongoose.Schema({
   lost_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'item', // Reference to the Item model for the lost item
+    ref: 'Item', // Reference to the Item model for the lost item
     required: true,
   },
   found_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'item', // Reference to the Item model for the found item
+    ref: 'Item', // Reference to the Item model for the found item
     required: true,
   },
   status: {

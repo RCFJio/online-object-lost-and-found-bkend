@@ -73,14 +73,22 @@ exports.postItem = async (req, res) => {
 
 exports.findItems = async (req, res) => {
   try {
-    const { status, category, location, date } = req.query;
+    const { status = 'found', category, location, date, object_id } = req.query; // Default status to 'found'
 
-    const filter = {};
-    if (status) filter.status = status;
+    const filter = { status }; // Always filter by 'found' items
     if (category) filter.category = category;
     if (location) filter.location = location;
 
-    // Give priority to category; apply date filter only if category is present
+    // Add object_id filter if provided
+    if (object_id) {
+      try {
+        filter._id = object_id; // Ensure it's a valid ID format
+      } catch (err) {
+        return res.status(400).json({ message: 'Invalid object_id format' });
+      }
+    }
+
+    // Apply date filter only if category is present
     if (category && date) {
       const startDate = new Date(date);
       const endDate = new Date(startDate);
@@ -88,7 +96,7 @@ exports.findItems = async (req, res) => {
 
       filter.date = {
         $gte: startDate,
-        $lt: endDate
+        $lt: endDate,
       };
     }
 
@@ -96,7 +104,7 @@ exports.findItems = async (req, res) => {
 
     // Check if no items were found
     if (items.length === 0) {
-      return res.status(404).json({ message: "Not found yet" });
+      return res.status(404).json({ message: 'No matching items found' });
     }
 
     res.json(items);
@@ -105,3 +113,20 @@ exports.findItems = async (req, res) => {
   }
 };
 
+exports.getLostItemsByUser = async (req, res) => {
+  try {
+    // Assuming `req.userId` contains the authenticated user's `user_id`
+    const lostItems = await Item.find({ 
+      postedBy: req.userId, 
+      status: 'lost' // Filter only 'lost' items
+    });
+
+    if (lostItems.length === 0) {
+      return res.status(404).json({ message: 'No lost items found for this user.' });
+    }
+
+    res.status(200).json(lostItems);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
