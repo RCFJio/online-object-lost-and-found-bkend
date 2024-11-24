@@ -1,0 +1,52 @@
+.steps-section {
+  padding: 3em 1em;
+  background-color: var(--background-color);
+  text-align: center;
+}
+
+.steps-heading {
+  font-family: var(--font-secondary);
+  font-size: 2em;
+  color: var(--primary-color);
+  margin-bottom: 1em;
+}
+
+.steps-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2em;
+}
+
+.step-card {
+  background-color: var(--white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 2em;
+  max-width: 300px;
+  text-align: center;
+  transition: transform var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.step-icon {
+  font-size: 3em;
+  margin-bottom: 1em;
+}
+
+.step-title {
+  font-family: var(--font-secondary);
+  font-size: 1.5em;
+  color: var(--primary-color);
+  margin-bottom: 0.5em;
+}
+
+.step-description {
+  font-family: var(--font-primary);
+  font-size: 1em;
+  color: var(--text-color);
+}

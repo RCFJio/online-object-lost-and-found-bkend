@@ -1,0 +1,82 @@
+.contact-container1 {
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-direction: column;
+  background-color: var(--background-color);
+  padding: 3em 2em;
+}
+
+.contact-max-width {
+  align-self: center;
+}
+
+.contact-content1 {
+  width: 100%;
+  margin-bottom: var(--dl-space-space-threeunits);
+  justify-content: center; /* Centers the content horizontally */
+  text-align: center; /* Centers the text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-content3 {
+  display: flex;
+  gap: 4em; /* Space between Admin Block and Library */
+  justify-content: center; /* Align items to center horizontally */
+  flex-wrap: wrap; /* Stack items vertically on smaller screens */
+  align-items: flex-start; /* Align items to the top */
+}
+
+.contact-container2,
+.contact-container4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 300px; /* Limit the width of each section */
+}
+
+.contact-image1,
+.contact-image2 {
+  width: 100%; /* Make images take full width of their container */
+  max-width: 250px; /* Limit the maximum width of the images */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1em; /* Add spacing below the image */
+}
+
+.contact-container3,
+.contact-container5 {
+  margin-top: 1em;
+}
+
+.contact-container3 a,
+.contact-container5 a {
+  color: var(--primary-color); /* Add color for links */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Highlight links */
+}
+
+.contact-container3 a:hover,
+.contact-container5 a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+@media (max-width: 768px) {
+  .contact-content3 {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: center; /* Center align items */
+  }
+
+  .contact-container2,
+  .contact-container4 {
+    max-width: 100%; /* Make containers take full width */
+  }
+
+  .contact-image1,
+  .contact-image2 {
+    max-width: 200px; /* Reduce image size for smaller screens */
+  }
+}
